@@ -1,0 +1,41 @@
+﻿@model Client
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="/css/site.css" />
+</head>
+<body>
+
+    <form method="post" asp-controller="Client" asp-action="Registration">
+        <label>Имя:</label>
+        <input type="text" asp-for="Name" /><br />
+
+        <label>Фамилия:</label>
+        <input type="text" asp-for="Surname" /><br />
+
+        <label>Возраст:</label>
+        <input type="text" asp-for="Age" /><br />
+
+        <label>Gmail:</label>
+        <input type="email" asp-for="Email" />
+        <span asp-validation-for="Email"></span><br />
+
+        <label>Пароль:</label>
+        <input type="password" asp-for="Password" /><br />
+
+        <label>Кто вы?</label><br />
+        <span>Работник</span>
+        <input type="radio" asp-for="Status" value=false />
+        <span>Работодатель</span>
+
+        <input type="radio" asp-for="Status" value=true /><br />
+        <input type="submit" value="Отправить" />
+    </form>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>
