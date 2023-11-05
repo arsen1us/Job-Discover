@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using hr_developing.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace hr_developing;
@@ -15,7 +16,7 @@ public partial class HrV3Context : DbContext
     {
     }
 
-    public virtual DbSet<Client> Clients { get; set; }
+    public virtual DbSet<AuthClientModel> Clients { get; set; }
 
     public virtual DbSet<Company> Companies { get; set; }
 
@@ -31,7 +32,7 @@ public partial class HrV3Context : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Client>(entity =>
+        modelBuilder.Entity<AuthClientModel>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__clients__3213E83FEEC1E448");
 

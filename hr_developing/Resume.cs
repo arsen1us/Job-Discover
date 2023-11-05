@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using hr_developing.Models;
 
 namespace hr_developing;
 
@@ -15,5 +16,5 @@ public partial class Resume
 
     public string FkClientId { get; set; } = null!;
 
-    public virtual Client FkClient { get; set; } = null!;
+    public virtual AuthClientModel FkClient { get; set; } = null!;
 }

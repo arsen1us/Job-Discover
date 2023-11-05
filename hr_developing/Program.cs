@@ -1,10 +1,30 @@
 using hr_developing;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(builder =>
+{
+    builder.LoginPath = "";
+    builder.AccessDeniedPath = "";
+});
+
+builder.Services.AddAuthorization(configure =>
+{
+    configure.AddPolicy("Policy1", policy =>
+    {
+        policy.RequireClaim("", "");
+    });
+
+    configure.AddPolicy("Policy2", policy =>
+    {
+        policy.RequireClaim("", "");
+    });
+});
+
 
 var configurationBuilder = new ConfigurationBuilder();
 configurationBuilder.SetBasePath(Directory.GetCurrentDirectory());

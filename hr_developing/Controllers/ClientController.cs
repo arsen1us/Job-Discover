@@ -4,21 +4,31 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using hr_developing.Models;
 
 namespace hr_developing.Controllers
 {
     public class ClientController : Controller
     {
+        IAuthenticationService authenticationService;
+        IAuthorizationService authorizationService;
         HrV3Context database;
-        public ClientController(HrV3Context database)
+
+        public ClientController(HrV3Context database, IAuthenticationService authenticationService, IAuthorizationService authorizationService)
         {
             this.database = database;
+            this.authenticationService = authenticationService;
+            this.authorizationService = authorizationService;
         }
 
+        
         public IActionResult Index()
         {
+            ViewBag.Title = "Index";
             return View();
         }
+
         [HttpGet]
         public IActionResult Registration()
         {
@@ -26,17 +36,10 @@ namespace hr_developing.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Registration(Client client)
+        public async Task<ActionResult> Registration(AuthClientModel client)
         {
             using var db = database;
-            client = new Client
-            {
-                Id = GenerateUserId(),
-                Name = "Arseniy",
-                Surname = "Balaev",
-                Email = "@gmail.com",
-                Password = "12341234"
-            };
+
             if (client == null)
             {
                 throw new Exception("Client == null");
@@ -47,10 +50,7 @@ namespace hr_developing.Controllers
                 throw new Exception("Client Properties == null");
             }
 
-            string clientId = GenerateUserId();
-            client.Id = clientId;
-
-
+            client.Id = GenerateUserId();
             try
             {
                 await database.Database.OpenConnectionAsync();
@@ -58,9 +58,9 @@ namespace hr_developing.Controllers
                 await database.SaveChangesAsync();
                 await database.Database.CloseConnectionAsync();
             }
-            catch (Exception ex)
+            catch
             {
-                // логгировать ошибку, если регистрация не удалась;
+                throw new Exception("Не удалось подключиться к базе данных");
             }
 
             List<Claim> claimsList = new List<Claim>(4);
@@ -69,7 +69,7 @@ namespace hr_developing.Controllers
                 throw new Exception("id, name, surname is null");
             }
 
-            claimsList.Add(new Claim(ClaimTypes.NameIdentifier, clientId));
+            claimsList.Add(new Claim(ClaimTypes.NameIdentifier, client.Id));
             claimsList.Add(new Claim(ClaimTypes.Email, client.Email));
             claimsList.Add(new Claim(ClaimTypes.Name, client.Name));
             claimsList.Add(new Claim(ClaimTypes.Surname, client.Surname));
