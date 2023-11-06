@@ -16,7 +16,7 @@ public partial class HrV3Context : DbContext
     {
     }
 
-    public virtual DbSet<AuthClientModel> Clients { get; set; }
+    public virtual DbSet<RegClientViewModel> Clients { get; set; }
 
     public virtual DbSet<Company> Companies { get; set; }
 
@@ -32,7 +32,7 @@ public partial class HrV3Context : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<AuthClientModel>(entity =>
+        modelBuilder.Entity<RegClientViewModel>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__clients__3213E83FEEC1E448");
 

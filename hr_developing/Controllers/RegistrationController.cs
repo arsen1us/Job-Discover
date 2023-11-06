@@ -9,17 +9,14 @@ using hr_developing.Models;
 
 namespace hr_developing.Controllers
 {
-    public class ClientController : Controller
+    public class RegistrationController : Controller
     {
-        IAuthenticationService authenticationService;
-        IAuthorizationService authorizationService;
+
         HrV3Context database;
 
-        public ClientController(HrV3Context database, IAuthenticationService authenticationService, IAuthorizationService authorizationService)
+        public RegistrationController(HrV3Context database)
         {
             this.database = database;
-            this.authenticationService = authenticationService;
-            this.authorizationService = authorizationService;
         }
 
         
@@ -32,11 +29,11 @@ namespace hr_developing.Controllers
         [HttpGet]
         public IActionResult Registration()
         {
-            return View("registration_form");
+            return View("registrationForm");
         }
 
         [HttpPost]
-        public async Task<ActionResult> Registration(AuthClientModel client)
+        public async Task<ActionResult> Registration(RegClientViewModel client)
         {
             using var db = database;
 
@@ -71,14 +68,17 @@ namespace hr_developing.Controllers
 
             claimsList.Add(new Claim(ClaimTypes.NameIdentifier, client.Id));
             claimsList.Add(new Claim(ClaimTypes.Email, client.Email));
+            claimsList.Add(new Claim("Password", client.Password));
             claimsList.Add(new Claim(ClaimTypes.Name, client.Name));
             claimsList.Add(new Claim(ClaimTypes.Surname, client.Surname));
+
 
             var claimsIdentity = new ClaimsIdentity(claimsList, "Cookies");
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-            return Redirect("~/Client/Index");
+            return Redirect("~/Authentication/Index");
         }
+
         public string GenerateUserId()
         {
             string symbols = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -92,8 +92,19 @@ namespace hr_developing.Controllers
             }
             string userid = sb.ToString();
             return userid;
-
-            // claimTypes.UserIdentifier("id", "userid)
         }
+
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult CheckEmail(string email)
+        {
+            var client = database.Clients.FirstOrDefault(client => client.Email == email);
+            if (client != null)
+            {
+                return Json(false);
+            }
+            return Json(true);
+        }
+
+
     }
 }

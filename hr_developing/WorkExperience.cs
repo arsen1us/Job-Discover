@@ -22,5 +22,5 @@ public partial class WorkExperience
 
     public string FkClientId { get; set; } = null!;
 
-    public virtual AuthClientModel FkClient { get; set; } = null!;
+    public virtual RegClientViewModel FkClient { get; set; } = null!;
 }

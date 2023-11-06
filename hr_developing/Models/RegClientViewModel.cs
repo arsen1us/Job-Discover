@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace hr_developing.Models;
 
-public partial class AuthClientModel
+public partial class RegClientViewModel
 {
 
     public string Id { get; set; } = null!;
@@ -15,9 +15,10 @@ public partial class AuthClientModel
     public string Surname { get; set; } = null!;
     [Required(ErrorMessage = "Заполните поле Age")]
     public short Age { get; set; }
-    [Required(ErrorMessage = "Заполните поле Email")]
+    [Required(ErrorMessage = "Заполните поле Password")]
     public string Password { get; set; } = null!;
     [Required(ErrorMessage = "Заполните поле Email")]
+    [Remote(controller: "Registration", action: "CheckEmail", ErrorMessage = "Пользователь с данныи Email уже зарегестрирован")]
     public string Email { get; set; } = null!;
 
     public string? Phone { get; set; }
