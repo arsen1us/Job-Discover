@@ -1,0 +1,31 @@
+﻿@model RegClientViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/css/site.css" />
+</head>
+<body>
+    <div class="clientData">
+        <div class="clientName">
+            <p>@Model.Name</p>
+        </div>
+        <div class="clientName">
+            <p>@Model.Surname</p>
+        </div>
+        <div class="clientName">
+            <p>@Model.Email</p>
+        </div>
+        <div class="clientName">
+            <p>@Model.Password</p>
+        </div>
+        <div class="clientName">
+            <p>@Model.Id</p>
+        </div>
+        <div class="signOut">
+            <a href="~/Authentication/SignOut"><input type="submit" value="SignOut"/></a>
+        </div>
+    </div>
+</body>
+</html>

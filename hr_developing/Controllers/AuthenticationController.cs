@@ -21,6 +21,7 @@ namespace hr_developing.Controllers
         {
             return View("authenticationForm");
         }
+
         [HttpPost]
         public async Task<ActionResult> Authentication(AuthClientViewModel authenticationClient)
         {
@@ -40,8 +41,18 @@ namespace hr_developing.Controllers
 
             ClaimsIdentity clientIdentity = new ClaimsIdentity(clientClaims, "Cookies");
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(clientIdentity));
-            return Redirect("/shared/_layout");
+            return Redirect("/Profile/Index");
+        }
 
+        public IActionResult Quit()
+        {
+            return View("signOut");
+        }
+
+        public IActionResult SignOut()
+        {
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return Redirect("~/Profile/Index");
         }
 
         public IActionResult AccessDenied()

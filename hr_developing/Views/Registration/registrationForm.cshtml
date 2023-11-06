@@ -9,22 +9,27 @@
 </head>
 <body>
 
-    <form method="post" asp-controller="Client" asp-action="Registration">
+    <form method="post" asp-controller="Registration" asp-action="Registration">
         <label>Имя:</label>
-        <input type="text" asp-for="Name" /><br />
+        <input type="text" asp-for="Name" />\
+        <span asp-validation-for="Name"></span><br />
 
         <label>Фамилия:</label>
-        <input type="text" asp-for="Surname" /><br />
+        <input type="text" asp-for="Surname" />
+        <span asp-validation-for="Surname"></span><br />
 
         <label>Возраст:</label>
-        <input type="text" asp-for="Age" /><br />
+        <input type="text" asp-for="Age" />>
+        <span asp-validation-for="Age"></span><br />
 
         <label>Gmail:</label>
         <input type="email" asp-for="Email" />
         <span asp-validation-for="Email"></span><br />
 
+
         <label>Пароль:</label>
-        <input type="password" asp-for="Password" /><br />
+        <input type="password" asp-for="Password" />
+        <span asp-validation-for="Password"></span><br />
 
         <label>Кто вы?</label><br />
         <span>Работник</span>

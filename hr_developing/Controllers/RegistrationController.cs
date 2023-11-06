@@ -76,7 +76,7 @@ namespace hr_developing.Controllers
             var claimsIdentity = new ClaimsIdentity(claimsList, "Cookies");
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-            return Redirect("~/Authentication/Index");
+            return Redirect("/Profile/Index");
         }
 
         public string GenerateUserId()
@@ -104,6 +104,29 @@ namespace hr_developing.Controllers
             }
             return Json(true);
         }
+
+        //[AcceptVerbs("GET", "POST")]
+        //public IActionResult CheckPassword(string password)
+        //{
+        //    string[] easyPasswords = new string[] { "123456", "password", "123456789", "12345678", "1234567", "qwerty", "12345"
+        //        , "1234567890", "1234", "qwerty123", "qwertyuiop", "1q2w3e4r", "1qaz2wsx", "superman", "iloveyou", "letmein"
+        //        , "football","admin", "welcome", "123123", "abc123", "monkey", "password1", "sunshine", "princess", "qwerty1234"
+        //        , "login", "passw0rd", "football123", "123qwe", "654321", "111111", "987654321", "123abc", "123456a", "7777777", "test123"  };
+
+        //    for (int i = 0; i < easyPasswords.Length; i++)
+        //    {
+        //        if (password == easyPasswords[i])
+        //        {
+        //            return Json(false);                   
+        //        }
+
+        //        else
+        //        {
+        //            return Json(true);
+        //        }
+        //    }
+        //    return Json(true);
+        //}
 
 
     }
