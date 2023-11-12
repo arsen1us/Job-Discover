@@ -33,7 +33,8 @@ namespace hr_developing.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Registration(RegClientViewModel client)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Registration(Client client)
         {
             using var db = database;
 
@@ -51,7 +52,7 @@ namespace hr_developing.Controllers
             try
             {
                 await database.Database.OpenConnectionAsync();
-                await database.AddAsync(client);
+                await database.Clients.AddAsync(client);
                 await database.SaveChangesAsync();
                 await database.Database.CloseConnectionAsync();
             }
@@ -104,6 +105,9 @@ namespace hr_developing.Controllers
             }
             return Json(true);
         }
+
+        
+
 
         //[AcceptVerbs("GET", "POST")]
         //public IActionResult CheckPassword(string password)

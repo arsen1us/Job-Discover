@@ -14,7 +14,7 @@ public partial class Company
 
     public string FkClientId { get; set; } = null!;
 
-    public virtual RegClientViewModel FkClient { get; set; } = null!;
+    public virtual Client FkClient { get; set; } = null!;
 
     public virtual ICollection<Profession> Professions { get; set; } = new List<Profession>();
 }

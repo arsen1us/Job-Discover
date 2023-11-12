@@ -23,18 +23,22 @@ namespace hr_developing.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Authentication(AuthClientViewModel authenticationClient)
         {
             string email = authenticationClient.Email;
             string password = authenticationClient.Password;
 
-            if (database.Clients.FirstOrDefault(client => client.Email == email && client.Password == password) == null)
+            var client = database.Clients.FirstOrDefault(client => client.Email == email && client.Password == password);
+
+			if(client == null)
             {
                 return Redirect("/Authentication/AccessDenied");
             }
 
             List<Claim> clientClaims = new List<Claim>
             {
+                new Claim(ClaimTypes.NameIdentifier, client.Id),
                 new Claim(ClaimTypes.Email, email),
                 new Claim("Password", password)
             };

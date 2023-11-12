@@ -16,5 +16,5 @@ public partial class Resume
 
     public string FkClientId { get; set; } = null!;
 
-    public virtual RegClientViewModel FkClient { get; set; } = null!;
+    public virtual Client FkClient { get; set; } = null!;
 }

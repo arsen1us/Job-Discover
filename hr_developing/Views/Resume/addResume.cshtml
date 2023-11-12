@@ -1,0 +1,25 @@
+﻿@model AddResumeModel
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/css/site.css" />
+</head>
+<body>
+    <form method="post" asp-action="AddResume" asp-controller="Resume">
+        <label>Profession</label>
+        <input type="text" asp-for="Profession" />
+        <span asp-validation-for="Profession"></span><br/>
+        <label>Salary</label>
+        <input type="number" asp-for="Salary"/><br/>
+        <span asp-validation-for="Salary"></span><br />
+        <label>KeySkills</label>
+        <input type="text" asp-for="Keyskills"/><br/>
+        <span asp-validation-for="Keyskills"></span><br />
+        <input type="submit" value="Send"/>
+    </form>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

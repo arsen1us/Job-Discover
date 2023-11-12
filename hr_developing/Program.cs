@@ -1,6 +1,9 @@
 using hr_developing;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using System.Text;
+using static System.GC;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +29,7 @@ builder.Services.AddAuthorization(configure =>
 });
 
 
+builder.Services.AddTransient<IGenerateId, GenerateId>();
 var configurationBuilder = new ConfigurationBuilder();
 configurationBuilder.SetBasePath(Directory.GetCurrentDirectory());
 configurationBuilder.AddJsonFile("appsettings.json");
@@ -60,3 +64,33 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+public interface IGenerateId
+{
+    string Symbols { get; }
+
+    string Generate(int idLength = 15);
+}
+
+public class GenerateId : IGenerateId, IDisposable
+{
+    public string Symbols { get; } = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    public string Generate(int idLength = 15)
+    {
+        Random rand = new Random();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < idLength; i++)
+        {
+            int index = rand.Next(0, Symbols.Length - 1);
+            sb.Append(Symbols[index]);
+        }
+        string userid = sb.ToString();
+        return userid;
+    }
+
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
+    }
+}

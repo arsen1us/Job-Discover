@@ -4,21 +4,15 @@ using hr_developing.Models;
 
 namespace hr_developing;
 
-public partial class WorkExperience
+public partial class AddResumeModel
 {
     public string Id { get; set; } = null!;
 
-    public string CompanyName { get; set; } = null!;
-
     public string Profession { get; set; } = null!;
 
-    public DateTime BeginningOfWork { get; set; }
-
-    public bool NowWorking { get; set; }
-
-    public DateTime EndingOfWork { get; set; }
-
     public double Salary { get; set; }
+
+    public string Keyskills { get; set; } = null!;
 
     public string FkClientId { get; set; } = null!;
 
