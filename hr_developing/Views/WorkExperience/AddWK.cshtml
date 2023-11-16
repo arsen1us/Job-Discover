@@ -1,0 +1,36 @@
+﻿@model WorkExperience
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="/css/site.css" />
+        <title>Добавление опыта работы</title>
+    </head>
+    <body>
+        <form method="post" asp-action="AddWK" asp-controller="WorkExperience">
+            <label>Company: </label>
+            <input type="text" asp-for="CompanyName" /><br/>
+
+            <label>Profession: </label>
+            <input type="text" asp-for="Profession" /><br />
+
+            <label>Salary: </label>
+            <input type="text" asp-for="Salary" /><br/>
+
+            <label>Beginning of work</label>
+            <input type="date" asp-for="BeginningOfWork" />
+
+            <label>Ending of work</label>
+            <input type="date" asp-for="EndingOfWork" />
+
+            <p>Or if you work now tap here</p>
+
+            <label>Now working:</label>
+            <input type="radio" asp-for="NowWorking" value="true"/><span>Yes</span>
+            <input type="radio" asp-for="NowWorking" value="false" /><span>No</span>
+
+            <input type="submit" value="send"/>
+        </form>
+    </body>
+</html>

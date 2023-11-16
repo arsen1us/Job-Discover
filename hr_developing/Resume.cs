@@ -14,6 +14,10 @@ public partial class Resume
 
     public string Keyskills { get; set; } = null!;
 
+    public string Discription { get; set; } = null!;
+
+    public DateTime PublicationDate { get; set; } = DateTime.Now;
+
     public string FkClientId { get; set; } = null!;
 
     public virtual Client FkClient { get; set; } = null!;

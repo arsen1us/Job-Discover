@@ -1,0 +1,64 @@
+﻿@model Resume
+@inject UserService userService
+@inject WorkExperienceService wkService
+
+@{
+    string resumeId = Model.FkClientId;
+    var client = await userService.GetUserByIdAsync(resumeId);
+
+    string clientId = client.Id;
+    var workExperience = wkService.GetWorkExperience(clientId);
+
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/css/site.css" />
+    <title>@Model.Id page</title>
+</head>
+<body>
+    <div class="discriptionDiv">
+        <div class="aboutMeTitle">
+            <h3>Обо мне</h3>
+        </div>
+        <div class="aboutMe">
+            <p>@Model.Discription</p>
+        </div>
+    </div>
+    <div class="workExperinceDiv">
+        <p>Найдено @workExperience.Count() записей</p>
+        <div class="workExperirnceList">            
+
+            @foreach(var wk in workExperience)
+            {
+                TimeSpan workTime = new TimeSpan();
+                if(wk.NowWorking is true)
+                {
+                    workTime = DateTime.Now - wk.BeginningOfWork;
+                }
+                else
+                {
+                    workTime = wk.EndingOfWork - wk.BeginningOfWork;
+                }
+                double months = Math.Round(workTime.TotalDays / 30);
+
+                <div class="workExperience">
+                    <div class="company">
+                        <p>@wk.CompanyName</p>
+                    </div>
+                    <div class="profession">
+                        <p>@wk.Profession</p>
+                    </div>
+                    <div class="workTime">
+                        <p>@months месяц</p>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+    
+    
+</body>
+</html>

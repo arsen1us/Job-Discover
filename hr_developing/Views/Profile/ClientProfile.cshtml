@@ -1,5 +1,13 @@
 ﻿@model Client
 
+@inject ResumeService resumeService
+@inject WorkExperienceService wkService
+
+@{
+    string clientId = Model.Id;
+    var resumes = await resumeService.GetUserResumesAsync(clientId);
+    var workExperience = wkService.GetWorkExperience(clientId);
+}
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,19 +17,84 @@
 <body>
     <div class="clientData">
         <div class="clientName">
-            <p>@Model.Name</p>
+            <p>Name @Model.Name</p>
         </div>
         <div class="clientName">
-            <p>@Model.Surname</p>
+            <p>Surname @Model.Surname</p>
         </div>
         <div class="clientName">
-            <p>@Model.Email</p>
+            <p>Email @Model.Email</p>
         </div>
         <div class="clientName">
-            <p>@Model.Password</p>
+            <p>Password @Model.Password</p>
         </div>
         <div class="clientName">
-            <p>@Model.Id</p>
+            <p>Id @Model.Id</p>
+        </div>
+
+        <div>
+            <div class="resumeTitle">
+                <h3>Мои резюме</h3>
+            </div>
+            <div class="resumeCount">
+                <p>Всего резюме @resumes.Count()</p>
+            </div>
+            <div class = "resumeList">
+                @foreach(var resume in resumes)
+                {
+                    <div class="resume">
+                        <div class="resumeProfession">
+                            <a asp-controller="Resume" asp-action="ResumePage" asp-route-resumeId="@resume.Id"><b>@resume.Profession</b></a>
+                        </div>
+                        <div class="resumeSalary">
+                            <p>Salary - @resume.Salary</p>
+                        </div>
+                        <div class="resumeKeyskills">
+                            <p>KeySkills - @resume.Keyskills</p>
+                        </div>
+                        <div class="resumePublicationDate">
+                            <p>Время публикацим резюме - @resume.PublicationDate</p>
+                        </div>
+                        <div class="upButton">
+                            <button>Up in Search</button>
+                        </div>
+                    </div>
+                }
+            </div>
+            
+        </div>
+        <div>
+            <div class="wkTitle">
+                <h3>Мой опыт работы</h3>
+            </div>
+            <div class="wkCount">
+                <p>@workExperience.Count</p>
+            </div>
+            @foreach(var wk in workExperience)
+            {
+                TimeSpan workTime = new TimeSpan();
+                if (wk.NowWorking is true)
+                {
+                    workTime = DateTime.Now - wk.BeginningOfWork;
+                }
+                else
+                {
+                    workTime = wk.EndingOfWork - wk.BeginningOfWork;
+                }
+                double months = Math.Round(workTime.TotalDays / 30);
+
+                <div class="workExperience">
+                    <div class="company">
+                        <p>Company - @wk.CompanyName</p>
+                    </div>
+                    <div class="profession">
+                        <p>Profession - @wk.Profession</p>
+                    </div>
+                    <div class="workTime">
+                        <p>Work Time - @months месяц</p>
+                    </div>
+                </div>
+            }
         </div>
         <div class="signOut">
             <a href="~/Authentication/SignOut"><input type="submit" value="SignOut"/></a>

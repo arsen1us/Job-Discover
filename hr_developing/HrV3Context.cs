@@ -149,7 +149,14 @@ public partial class HrV3Context : DbContext
                 .HasMaxLength(30)
                 .IsUnicode(false)
                 .HasColumnName("profession");
-            entity.Property(e => e.Salary).HasColumnName("salary");
+            entity.Property(e => e.Salary)
+                .HasColumnName("salary");
+            entity.Property(e => e.PublicationDate)
+                .HasColumnName("publication_date");
+            entity.Property(e => e.Discription)
+                .HasColumnName("discription")
+                .HasMaxLength(2000)
+                .IsUnicode(false);
 
             entity.HasOne(d => d.FkClient).WithMany(p => p.Resumes)
                 .HasForeignKey(d => d.FkClientId)

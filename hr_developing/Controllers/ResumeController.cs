@@ -8,10 +8,14 @@ namespace hr_developing.Controllers
     {
         IGenerateId IdGenerator;
         HrV3Context database;
-        public ResumeController(HrV3Context database, IGenerateId idGenerator)
+        //ResumeService resumeService;
+        UserService userService;
+        public ResumeController(HrV3Context database, IGenerateId idGenerator, UserService userService)
         {
             this.database = database;
             IdGenerator = idGenerator;
+            //this.resumeService = resumeService;
+            this.userService = userService;
         }
 
         [HttpGet]
@@ -44,6 +48,8 @@ namespace hr_developing.Controllers
             resume.FkClientId = clientId;
             resume.FkClient = currentClient;
 
+            currentClient.Resumes.Add(resume);
+
             await database.Resumes.AddAsync(resume);
             await database.SaveChangesAsync();
             await database.Database.CloseConnectionAsync();
@@ -52,9 +58,64 @@ namespace hr_developing.Controllers
             return Redirect("~/Profile/Index");
         }
 
+        public async Task<IActionResult> ResumeList()
+        {
+            var allresumes = await database.Resumes.ToListAsync();
+
+            return View(allresumes);
+        }
+
         public IActionResult RemoveResume()
         {
             throw new Exception();
+        }
+
+        //public IActionResult Method()
+        //{
+        //    var resumes = resumeService.AddResumesToDistributedCache();
+        //    return View("ResumeList", resumes);
+        //}
+        //[HttpPost]
+        //public string ResumesSearch(string searchString, bool notUsed)
+        //{
+        //    return "From [HttpPost]Index: filter on " + searchString;
+        //}
+
+
+        public async Task<IActionResult> ResumesSearch(string searchString)
+        {
+            if(database.Resumes == null)
+            {
+                return Problem("No resumes fields in Resume database");
+            }
+            var resumes = from resume in database.Resumes
+                          select resume;
+
+            if(!string.IsNullOrEmpty(searchString))
+            {
+                resumes = resumes.Where(resume => resume.Profession.Contains(searchString) || resume.Keyskills.Contains(searchString));    
+            }
+            return View("ResumeList", await resumes.ToListAsync());
+            
+        }
+
+        public async Task<IActionResult> ResumePage(string resumeId)
+        {
+            if(resumeId == null)
+            {
+                throw new Exception("resumeId == null");
+            }
+            
+            var resume = await database.Resumes.FirstOrDefaultAsync(resume => resume.Id == resumeId);
+
+            if(resume == null)
+            {
+                return StatusCode(404, "Resume not found");
+            }
+
+            //var client = await userService.GetUserByIdAsync(resume.FkClientId);
+
+            return View("resumePage", resume);
         }
 
 

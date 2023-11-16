@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Resume>
+@using System.Linq;
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="/css/site.css"/>
+        <title>Resume List</title>
+    </head>
+    <body>
+    <form method="post" asp-action="ResumesSearch" asp-controller="Resume">
+        <input type="text" name="searchString" />
+        <input type="submit" value="search" />
+    </form>
+
+    <p>Найдено @Model.Count() предложений</p>
+    <div class="resumeList">
+        @foreach (var resume in Model)
+        {
+            <div class="resume">
+                <div class="resumeProfession">
+                    <a asp-controller="Resume" asp-action="ResumePage" asp-route-resumeId="@resume.Id"><b>@resume.Profession</b></a>
+                </div>
+                <div class="resumeSalary">
+                    <p>Salary - @resume.Salary</p>
+                </div>
+                <div class="resumeKeyskills">
+                    <p>KeySkills - @resume.Keyskills</p>
+                </div>
+                <div class="resumePublicationDate">
+                    <p>Время публикацим резюме - @resume.PublicationDate</p>
+                </div>
+            </div>
+        }
+    </div>
+    
+    </body>
+</html>

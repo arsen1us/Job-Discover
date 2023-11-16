@@ -23,7 +23,7 @@ namespace hr_developing.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Authentication(AuthClientViewModel authenticationClient)
         {
             string email = authenticationClient.Email;
